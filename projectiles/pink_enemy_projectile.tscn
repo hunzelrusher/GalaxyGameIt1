@@ -1,0 +1,122 @@
+[gd_scene load_steps=15 format=3 uid="uid://ck61gvxncf670"]
+
+[ext_resource type="Script" path="res://projectiles/pink_enemy_projectile.gd" id="1_n7ajf"]
+[ext_resource type="Texture2D" uid="uid://dmgm4pyxjixbo" path="res://assets/pink_enemy_projectile.png" id="1_xuomi"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="2_uabh1"]
+[ext_resource type="Script" path="res://components/move_component.gd" id="3_bnwpr"]
+[ext_resource type="Script" path="res://components/scale_component.gd" id="4_yorwh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5i7bq"]
+atlas = ExtResource("1_xuomi")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e11ai"]
+atlas = ExtResource("1_xuomi")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5egyj"]
+atlas = ExtResource("1_xuomi")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfc7g"]
+atlas = ExtResource("1_xuomi")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tyrn2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5i7bq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e11ai")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5egyj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mfc7g")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5u2vv"]
+radius = 4.0
+
+[sub_resource type="Animation" id="Animation_64d5s"]
+resource_name = "ocillate"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Anchor:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-4, 0), Vector2(4, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_77uwb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Anchor:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_evpp2"]
+_data = {
+"RESET": SubResource("Animation_77uwb"),
+"ocillate": SubResource("Animation_64d5s")
+}
+
+[node name="PinkEnemyProjectile" type="Node2D"]
+script = ExtResource("1_n7ajf")
+
+[node name="Anchor" type="Node2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Anchor"]
+sprite_frames = SubResource("SpriteFrames_tyrn2")
+autoplay = "default"
+frame = 2
+frame_progress = 0.662483
+
+[node name="HitboxComponent" type="Area2D" parent="Anchor"]
+collision_layer = 0
+script = ExtResource("2_uabh1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Anchor/HitboxComponent"]
+shape = SubResource("CircleShape2D_5u2vv")
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("3_bnwpr")
+actor = NodePath("..")
+velocity = Vector2(0, 30)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(2.38419e-07, 2.38419e-07)
+scale = Vector2(0.5, 0.5)
+
+[node name="ScaleComponent" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+script = ExtResource("4_yorwh")
+sprite = NodePath("../Anchor/AnimatedSprite2D")
+scale_amount = Vector2(2, 2)
+scale_duration = 1.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_evpp2")
+}
+autoplay = "ocillate"

@@ -1,0 +1,118 @@
+[gd_scene load_steps=18 format=3 uid="uid://tewsdnc822tw"]
+
+[ext_resource type="Script" path="res://projectiles/missle_exposion.gd" id="1_gy2ju"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="2_0bs6a"]
+[ext_resource type="Texture2D" uid="uid://liuq6qoxpbqo" path="res://assets/Circle_explosion/Circle_explosion1.png" id="2_w0b1g"]
+[ext_resource type="Texture2D" uid="uid://ccocbqn6e7pmv" path="res://assets/Circle_explosion/Circle_explosion2.png" id="3_a75kn"]
+[ext_resource type="Texture2D" uid="uid://gqnhb5ja6x2j" path="res://assets/Circle_explosion/Circle_explosion3.png" id="4_2w65s"]
+[ext_resource type="Texture2D" uid="uid://1xdgwikxt43e" path="res://assets/Circle_explosion/Circle_explosion4.png" id="5_v0va8"]
+[ext_resource type="Texture2D" uid="uid://biebyradk8xug" path="res://assets/Circle_explosion/Circle_explosion5.png" id="6_i7lph"]
+[ext_resource type="Texture2D" uid="uid://cucqemgh155v1" path="res://assets/Circle_explosion/Circle_explosion6.png" id="7_koqq6"]
+[ext_resource type="Texture2D" uid="uid://fwam0xgue3s5" path="res://assets/Circle_explosion/Circle_explosion7.png" id="8_cq33j"]
+[ext_resource type="Texture2D" uid="uid://mpqih2hbptqu" path="res://assets/Circle_explosion/Circle_explosion8.png" id="9_3xybe"]
+[ext_resource type="Texture2D" uid="uid://dshok8vek30m2" path="res://assets/Circle_explosion/Circle_explosion9.png" id="10_y2uw0"]
+[ext_resource type="Texture2D" uid="uid://dr3qel0xvaux7" path="res://assets/Circle_explosion/Circle_explosion10.png" id="11_0xrqu"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6nj6u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w0b1g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_a75kn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_2w65s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_v0va8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_i7lph")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_koqq6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_cq33j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_3xybe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_y2uw0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_0xrqu")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_cd5wf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxComponent/CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_y7fel"]
+resource_name = "explosion_scaling"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HitboxComponent/CollisionShape2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_53qk8"]
+_data = {
+"RESET": SubResource("Animation_cd5wf"),
+"explosion_scaling": SubResource("Animation_y7fel")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jruhq"]
+radius = 35.0571
+
+[node name="MissleExposion" type="Node2D"]
+position = Vector2(76, 116)
+script = ExtResource("1_gy2ju")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-2, -2)
+scale = Vector2(0.585, 0.585)
+sprite_frames = SubResource("SpriteFrames_6nj6u")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame = 7
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_53qk8")
+}
+autoplay = "explosion_scaling"
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("2_0bs6a")
+damage = 10.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+shape = SubResource("CircleShape2D_jruhq")

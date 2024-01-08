@@ -1,0 +1,68 @@
+[gd_scene load_steps=13 format=3 uid="uid://bldda3o05g8cj"]
+
+[ext_resource type="Script" path="res://upgrades/upgrade.gd" id="1_rnhx5"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="3_ggj7s"]
+[ext_resource type="Texture2D" uid="uid://eqlcd336vvym" path="res://assets/blue_coin_round_blank_1.png" id="3_s10d0"]
+[ext_resource type="Texture2D" uid="uid://0pp68beq73i" path="res://assets/blue_coin_round_blank_2.png" id="4_g7xkn"]
+[ext_resource type="Texture2D" uid="uid://d33ye0kgyewxy" path="res://assets/blue_coin_round_blank_3.png" id="5_8yjtt"]
+[ext_resource type="PackedScene" uid="uid://jw0w4u5gc4uj" path="res://upgrades/upgrade_effekt.tscn" id="5_gsp8u"]
+[ext_resource type="Texture2D" uid="uid://dgdsgrtunrduf" path="res://assets/blue_coin_round_blank_4.png" id="6_bskxc"]
+[ext_resource type="Texture2D" uid="uid://cmcxx5s1yini1" path="res://assets/blue_coin_round_blank_5.png" id="7_ucbat"]
+[ext_resource type="Texture2D" uid="uid://bp3nyrgnpvq24" path="res://assets/blue_coin_round_blank_6.png" id="8_lvg2o"]
+[ext_resource type="Script" path="res://components/move_component.gd" id="10_ttve8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_477ug"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_s10d0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_g7xkn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_8yjtt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_bskxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_ucbat")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_lvg2o")
+}],
+"loop": true,
+"name": &"upgrade",
+"speed": 6.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1l1mg"]
+radius = 8.06226
+
+[node name="Upgrade" type="Node2D"]
+script = ExtResource("1_rnhx5")
+effekt = ExtResource("5_gsp8u")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_477ug")
+animation = &"upgrade"
+autoplay = "upgrade"
+frame_progress = 0.927491
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("3_ggj7s")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("CircleShape2D_1l1mg")
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("10_ttve8")
+actor = NodePath("..")
+velocity = Vector2(0, 10)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(0.8, 0.8)

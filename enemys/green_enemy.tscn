@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://c8hbdvp7p64lh"]
+
+[ext_resource type="PackedScene" uid="uid://bng8vo1tby4gh" path="res://enemys/enemy.tscn" id="1_dv8gm"]
+[ext_resource type="Texture2D" uid="uid://yksky56vuoy4" path="res://assets/green_enemy.png" id="2_83jsi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28nu2"]
+atlas = ExtResource("2_83jsi")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ttf1u"]
+atlas = ExtResource("2_83jsi")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0gsem"]
+atlas = ExtResource("2_83jsi")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_canks"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28nu2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ttf1u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0gsem")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_yprlg"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mxjkp"]
+radius = 6.08276
+
+[node name="GreenEnemy" instance=ExtResource("1_dv8gm")]
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_canks")
+animation = &"move"
+frame_progress = 0.194738
+
+[node name="StatsComponent" parent="." index="1"]
+health = 3
+
+[node name="MoveComponent" parent="." index="2"]
+velocity = Vector2(0, 40)
+
+[node name="VisibleOnScreenNotifier2D" parent="." index="3"]
+position = Vector2(4.17233e-07, 4.17233e-07)
+scale = Vector2(0.8, 0.8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent" index="0"]
+shape = SubResource("CircleShape2D_yprlg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent" index="0"]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_mxjkp")
+
+[node name="UpgradeRandomizer" parent="." index="14" node_paths=PackedStringArray("upgrade_spawner_component", "stats_component")]
+upgrade_spawner_component = NodePath("../UpgradeSpawnerComponent")
+stats_component = NodePath("../StatsComponent")
+upgrade_chance = 20

@@ -1,0 +1,143 @@
+[gd_scene load_steps=15 format=3 uid="uid://cbiafm1bxcvrd"]
+
+[ext_resource type="Script" path="res://projectiles/missle.gd" id="1_sx2ew"]
+[ext_resource type="Texture2D" uid="uid://224u3ldaqdko" path="res://assets/MissleAndFlame.png" id="1_yopuk"]
+[ext_resource type="Script" path="res://components/move_component.gd" id="2_ciyu1"]
+[ext_resource type="Script" path="res://components/scale_component.gd" id="3_37k5r"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="4_xnfny"]
+[ext_resource type="Script" path="res://components/spawner_component.gd" id="6_24ef1"]
+[ext_resource type="PackedScene" uid="uid://tewsdnc822tw" path="res://projectiles/missle_exposion.tscn" id="7_lp65v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ic51n"]
+atlas = ExtResource("1_yopuk")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6o6qk"]
+atlas = ExtResource("1_yopuk")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0ju2r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ic51n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6o6qk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p7ags"]
+radius = 9.58466
+height = 31.9489
+
+[sub_resource type="Animation" id="Animation_qhx7g"]
+resource_name = "scale_missle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.975, 1.975), Vector2(1.28, 1.28), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MoveComponent:velocity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -40), Vector2(0, -90), Vector2(0, -120)]
+}
+
+[sub_resource type="Animation" id="Animation_ocs0l"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1.43, 1.43)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MoveComponent:velocity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -50)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q5gak"]
+_data = {
+"RESET": SubResource("Animation_ocs0l"),
+"scale_missle": SubResource("Animation_qhx7g")
+}
+
+[node name="Missle" type="Node2D"]
+position = Vector2(79, 212)
+scale = Vector2(1.43, 1.43)
+script = ExtResource("1_sx2ew")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visibility_layer = 2
+position = Vector2(0, -2)
+scale = Vector2(0.25, 0.250001)
+sprite_frames = SubResource("SpriteFrames_0ju2r")
+autoplay = "default"
+frame_progress = 0.551237
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("2_ciyu1")
+actor = NodePath("..")
+velocity = Vector2(0, -50)
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(2.26498e-06, -2)
+scale = Vector2(0.3, 0.8)
+
+[node name="ScaleComponent" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+script = ExtResource("3_37k5r")
+sprite = NodePath("../AnimatedSprite2D")
+scale_amount = Vector2(2, 2)
+scale_duration = 1.0
+
+[node name="HitboxComponent" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("4_xnfny")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
+position = Vector2(0, -5)
+scale = Vector2(0.313, 0.313)
+shape = SubResource("CapsuleShape2D_p7ags")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_q5gak")
+}
+autoplay = "scale_missle"
+
+[node name="SpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("6_24ef1")
+scene = ExtResource("7_lp65v")

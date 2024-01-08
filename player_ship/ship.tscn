@@ -1,0 +1,280 @@
+[gd_scene load_steps=37 format=3 uid="uid://bxue3g5u4dpiq"]
+
+[ext_resource type="Script" path="res://player_ship/ship.gd" id="1_tdl4t"]
+[ext_resource type="Texture2D" uid="uid://c7hema8n2nf1v" path="res://assets/ship.png" id="1_tn2vg"]
+[ext_resource type="Script" path="res://components/move_component.gd" id="2_2oe0c"]
+[ext_resource type="Script" path="res://components/move_input_component.gd" id="3_dqkfw"]
+[ext_resource type="Resource" uid="uid://vrjjg6akwcv6" path="res://player_ship/ship_move_stats.tres" id="4_hg0gv"]
+[ext_resource type="Script" path="res://components/position_clamp_component.gd" id="5_66hu2"]
+[ext_resource type="Script" path="res://components/spawner_component.gd" id="7_ix741"]
+[ext_resource type="PackedScene" uid="uid://5hmrngqjuvqc" path="res://projectiles/laser.tscn" id="8_m052o"]
+[ext_resource type="Script" path="res://components/scale_component.gd" id="9_kejbs"]
+[ext_resource type="Texture2D" uid="uid://baaypxvraak4w" path="res://assets/ship_flame.png" id="10_07g7d"]
+[ext_resource type="PackedScene" uid="uid://cbiafm1bxcvrd" path="res://projectiles/missle.tscn" id="11_7hbou"]
+[ext_resource type="Script" path="res://components/ship_stats_component.gd" id="11_pnp2a"]
+[ext_resource type="Script" path="res://components/hurtbox_component.gd" id="12_qi4ex"]
+[ext_resource type="Script" path="res://components/hurt_component.gd" id="13_sx46d"]
+[ext_resource type="PackedScene" uid="uid://sj77xvdwskgg" path="res://effects/explosion_effect.tscn" id="14_mh5cy"]
+[ext_resource type="Script" path="res://components/destroyed_component.gd" id="15_ajxbn"]
+[ext_resource type="Script" path="res://player_ship/States.gd" id="16_itkfk"]
+[ext_resource type="Script" path="res://components/hitbox_component.gd" id="16_q4vkq"]
+[ext_resource type="Script" path="res://components/blink_component.gd" id="17_et8sc"]
+[ext_resource type="Script" path="res://player_ship/FireLaser.gd" id="18_c5cgo"]
+[ext_resource type="Script" path="res://player_ship/FireMissle.gd" id="20_nyv58"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="20_o5x0i"]
+[ext_resource type="AudioStream" uid="uid://dg2lkgpow13uh" path="res://sounds/laser_sound.wav" id="20_oqiqb"]
+[ext_resource type="Script" path="res://components/state_component.gd" id="20_uw04e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c803g"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mdgga"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q215u"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_413al"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ratkl"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gasxf"]
+atlas = ExtResource("10_07g7d")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4cswx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c803g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mdgga")
+}],
+"loop": true,
+"name": &"bank_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q215u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_413al")
+}],
+"loop": true,
+"name": &"bank_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ratkl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gasxf")
+}],
+"loop": true,
+"name": &"center",
+"speed": 10.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mteaq"]
+atlas = ExtResource("1_tn2vg")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c3sft"]
+atlas = ExtResource("1_tn2vg")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_burq1"]
+atlas = ExtResource("1_tn2vg")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0oowu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mteaq")
+}],
+"loop": true,
+"name": &"bank_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c3sft")
+}],
+"loop": true,
+"name": &"bank_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_burq1")
+}],
+"loop": true,
+"name": &"center",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hvuxp"]
+radius = 9.0
+height = 20.0
+
+[node name="Ship" type="Node2D"]
+z_index = 5
+position = Vector2(61, 40)
+script = ExtResource("1_tdl4t")
+
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("11_pnp2a")
+health = 3
+
+[node name="Anker" type="Node2D" parent="."]
+
+[node name="FlameAnimatedSprite" type="AnimatedSprite2D" parent="Anker"]
+unique_name_in_owner = true
+light_mask = 0
+z_index = 5
+position = Vector2(0, 16)
+sprite_frames = SubResource("SpriteFrames_4cswx")
+animation = &"bank_right"
+autoplay = "center"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Anker"]
+light_mask = 0
+z_index = 5
+sprite_frames = SubResource("SpriteFrames_0oowu")
+animation = &"center"
+
+[node name="MoveComponent" type="Node" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("2_2oe0c")
+actor = NodePath("..")
+
+[node name="MoveInputComponent" type="Node" parent="." node_paths=PackedStringArray("move_component")]
+script = ExtResource("3_dqkfw")
+move_stats = ExtResource("4_hg0gv")
+move_component = NodePath("../MoveComponent")
+
+[node name="PositionClampComponent" type="Node2D" parent="." node_paths=PackedStringArray("actor")]
+script = ExtResource("5_66hu2")
+actor = NodePath("..")
+
+[node name="MissleLogic" type="Node2D" parent="."]
+
+[node name="MissleTimer" type="Timer" parent="MissleLogic"]
+unique_name_in_owner = true
+wait_time = 10.0
+
+[node name="MissleMarker" type="Marker2D" parent="MissleLogic"]
+unique_name_in_owner = true
+position = Vector2(0, 3)
+
+[node name="LaserLogic" type="Node2D" parent="."]
+
+[node name="LeftMuzzle" type="Marker2D" parent="LaserLogic"]
+unique_name_in_owner = true
+position = Vector2(-5, -4)
+
+[node name="RightMuzzle" type="Marker2D" parent="LaserLogic"]
+unique_name_in_owner = true
+position = Vector2(5, -4)
+
+[node name="MidMuzzle" type="Marker2D" parent="LaserLogic"]
+unique_name_in_owner = true
+position = Vector2(0, -7)
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+collision_mask = 0
+script = ExtResource("12_qi4ex")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="HurtboxComponent"]
+polygon = PackedVector2Array(-8, 4, -8, 2, -5, -1, -3, -1, -3, -4, -1, -5, -1, -7, 1, -7, 1, -5, 3, -4, 3, -1, 5, -1, 8, 2, 8, 4, 5, 4, 5, 7, -5, 7, -5, 4)
+
+[node name="HurtComponent" type="Node" parent="." node_paths=PackedStringArray("stats_component", "hurtbox_component")]
+script = ExtResource("13_sx46d")
+stats_component = NodePath("../StatsComponent")
+hurtbox_component = NodePath("../HurtboxComponent")
+
+[node name="ExplosionSpawnerComponent" type="Node2D" parent="."]
+script = ExtResource("7_ix741")
+scene = ExtResource("14_mh5cy")
+
+[node name="DestroyedComponent" type="Node" parent="." node_paths=PackedStringArray("actor", "stats_component", "destroy_effect_spawner_component")]
+script = ExtResource("15_ajxbn")
+actor = NodePath("..")
+stats_component = NodePath("../StatsComponent")
+destroy_effect_spawner_component = NodePath("../ExplosionSpawnerComponent")
+
+[node name="UpgradeHitboxComponent" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("16_q4vkq")
+
+[node name="UpgradeCollisionShape" type="CollisionShape2D" parent="UpgradeHitboxComponent"]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_hvuxp")
+
+[node name="BlinkComponent" type="Node" parent="." node_paths=PackedStringArray("sprite")]
+script = ExtResource("17_et8sc")
+sprite = NodePath("../Anker/AnimatedSprite2D")
+blink_duration = 1.2
+flash_duration = 0.16
+
+[node name="States" type="Node2D" parent="."]
+script = ExtResource("16_itkfk")
+
+[node name="LaserState" type="Node" parent="States"]
+script = ExtResource("20_uw04e")
+
+[node name="FireLaser" type="Node2D" parent="States/LaserState" node_paths=PackedStringArray("stats_component")]
+position = Vector2(61, 40)
+script = ExtResource("18_c5cgo")
+stats_component = NodePath("../../../StatsComponent")
+
+[node name="FireRateTimer" type="Timer" parent="States/LaserState"]
+unique_name_in_owner = true
+wait_time = 0.4
+autostart = true
+
+[node name="LaserSpawnerComponent" type="Node2D" parent="States/LaserState"]
+unique_name_in_owner = true
+position = Vector2(61, 40)
+script = ExtResource("7_ix741")
+scene = ExtResource("8_m052o")
+
+[node name="ScaleComponent" type="Node" parent="States/LaserState" node_paths=PackedStringArray("sprite")]
+unique_name_in_owner = true
+script = ExtResource("9_kejbs")
+sprite = NodePath("../../../Anker")
+scale_amount = Vector2(1.4, 1.4)
+
+[node name="VariablePitchAudioStreamPlayer" type="AudioStreamPlayer" parent="States/LaserState"]
+stream = ExtResource("20_oqiqb")
+volume_db = -4.333
+bus = &"Sounds"
+script = ExtResource("20_o5x0i")
+
+[node name="MissleState" type="Node" parent="States"]
+script = ExtResource("20_uw04e")
+
+[node name="FireMissles" type="Node2D" parent="States/MissleState" node_paths=PackedStringArray("stats_component")]
+position = Vector2(61, 40)
+script = ExtResource("20_nyv58")
+stats_component = NodePath("../../../StatsComponent")
+
+[node name="MissleSpawnerComponent" type="Node2D" parent="States/MissleState"]
+unique_name_in_owner = true
+position = Vector2(61, 40)
+script = ExtResource("7_ix741")
+scene = ExtResource("11_7hbou")
+
+[connection signal="fire_rate_updated" from="StatsComponent" to="States/LaserState/FireLaser" method="_on_stats_component_fire_rate_updated"]
+[connection signal="missle_enabled_signal" from="StatsComponent" to="States" method="_on_stats_component_missle_enabled_signal"]

@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://jw0w4u5gc4uj"]
+
+[ext_resource type="Script" path="res://UpgradeEffekt.gd" id="1_iydmj"]
+[ext_resource type="LabelSettings" uid="uid://bib63bvudrxt5" path="res://fonts/default_label_settings.tres" id="2_2otvk"]
+
+[sub_resource type="Animation" id="Animation_rsjd6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_qx20p"]
+resource_name = "upgrade_effekt"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:visible_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cbv16"]
+_data = {
+"RESET": SubResource("Animation_rsjd6"),
+"upgrade_effekt": SubResource("Animation_qx20p")
+}
+
+[node name="UpgradeEffekt" type="Node2D"]
+script = ExtResource("1_iydmj")
+
+[node name="Label" type="Label" parent="."]
+offset_right = 71.0
+offset_bottom = 19.0
+text = "firerate up"
+label_settings = ExtResource("2_2otvk")
+visible_characters = 0
+visible_ratio = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cbv16")
+}
+autoplay = "upgrade_effekt"
+
+[connection signal="animation_changed" from="AnimationPlayer" to="." method="_on_animation_player_animation_changed"]
