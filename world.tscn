@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cnjkgyohlhdce"]
+[gd_scene load_steps=7 format=3 uid="uid://cnjkgyohlhdce"]
 
 [ext_resource type="PackedScene" uid="uid://bxue3g5u4dpiq" path="res://player_ship/ship.tscn" id="1_0ln3r"]
 [ext_resource type="PackedScene" uid="uid://cld6n52n8s3qq" path="res://effects/space_background.tscn" id="1_2kr0w"]
@@ -6,7 +6,6 @@
 [ext_resource type="Resource" uid="uid://uogyw4q1gv7e" path="res://game_stats.tres" id="2_wuarq"]
 [ext_resource type="PackedScene" uid="uid://vlrq31dqy0jb" path="res://enemys/enemy_generator.tscn" id="3_68n2e"]
 [ext_resource type="LabelSettings" uid="uid://bib63bvudrxt5" path="res://fonts/default_label_settings.tres" id="5_n3eaj"]
-[ext_resource type="PackedScene" uid="uid://bldda3o05g8cj" path="res://upgrades/upgrade.tscn" id="7_d6tpf"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_f78b4")
@@ -26,6 +25,3 @@ text = "score"
 label_settings = ExtResource("5_n3eaj")
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Upgrade" parent="." instance=ExtResource("7_d6tpf")]
-position = Vector2(80, 168)

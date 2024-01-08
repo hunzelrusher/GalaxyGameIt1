@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cbiafm1bxcvrd"]
+[gd_scene load_steps=17 format=3 uid="uid://cbiafm1bxcvrd"]
 
 [ext_resource type="Script" path="res://projectiles/missle.gd" id="1_sx2ew"]
 [ext_resource type="Texture2D" uid="uid://224u3ldaqdko" path="res://assets/MissleAndFlame.png" id="1_yopuk"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://components/hitbox_component.gd" id="4_xnfny"]
 [ext_resource type="Script" path="res://components/spawner_component.gd" id="6_24ef1"]
 [ext_resource type="PackedScene" uid="uid://tewsdnc822tw" path="res://projectiles/missle_exposion.tscn" id="7_lp65v"]
+[ext_resource type="AudioStream" uid="uid://cvmdm6hk56rnj" path="res://sounds/632703__bananamilkshake__missile.wav" id="8_48rba"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="9_u5g62"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ic51n"]
 atlas = ExtResource("1_yopuk")
@@ -34,33 +36,6 @@ animations = [{
 radius = 9.58466
 height = 31.9489
 
-[sub_resource type="Animation" id="Animation_qhx7g"]
-resource_name = "scale_missle"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:scale")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.6, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1.975, 1.975), Vector2(1.28, 1.28), Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MoveComponent:velocity")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.6, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, -40), Vector2(0, -90), Vector2(0, -120)]
-}
-
 [sub_resource type="Animation" id="Animation_ocs0l"]
 length = 0.001
 tracks/0/type = "value"
@@ -86,6 +61,33 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, -50)]
+}
+
+[sub_resource type="Animation" id="Animation_qhx7g"]
+resource_name = "scale_missle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1.975, 1.975), Vector2(1.28, 1.28), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MoveComponent:velocity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -40), Vector2(0, -90), Vector2(0, -120)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_q5gak"]
@@ -141,3 +143,9 @@ autoplay = "scale_missle"
 [node name="SpawnerComponent" type="Node2D" parent="."]
 script = ExtResource("6_24ef1")
 scene = ExtResource("7_lp65v")
+
+[node name="VariablePitchAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_48rba")
+bus = &"Sounds"
+script = ExtResource("9_u5g62")
+auto_play_with_variance = true

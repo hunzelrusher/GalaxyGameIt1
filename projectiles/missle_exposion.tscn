@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://tewsdnc822tw"]
+[gd_scene load_steps=20 format=3 uid="uid://tewsdnc822tw"]
 
 [ext_resource type="Script" path="res://projectiles/missle_exposion.gd" id="1_gy2ju"]
 [ext_resource type="Script" path="res://components/hitbox_component.gd" id="2_0bs6a"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://mpqih2hbptqu" path="res://assets/Circle_explosion/Circle_explosion8.png" id="9_3xybe"]
 [ext_resource type="Texture2D" uid="uid://dshok8vek30m2" path="res://assets/Circle_explosion/Circle_explosion9.png" id="10_y2uw0"]
 [ext_resource type="Texture2D" uid="uid://dr3qel0xvaux7" path="res://assets/Circle_explosion/Circle_explosion10.png" id="11_0xrqu"]
+[ext_resource type="AudioStream" uid="uid://ds6dos22ws4x8" path="res://sounds/259962__thehorriblejoke__8-bit-explosion.wav" id="13_7ru4i"]
+[ext_resource type="Script" path="res://components/variable_pitch_audio_stream_player.gd" id="14_2nxrb"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6nj6u"]
 animations = [{
@@ -100,7 +102,6 @@ scale = Vector2(0.585, 0.585)
 sprite_frames = SubResource("SpriteFrames_6nj6u")
 animation = &"new_animation"
 autoplay = "new_animation"
-frame = 7
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -116,3 +117,8 @@ damage = 10.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxComponent"]
 shape = SubResource("CircleShape2D_jruhq")
+
+[node name="VariablePitchAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_7ru4i")
+script = ExtResource("14_2nxrb")
+auto_play_with_variance = true
